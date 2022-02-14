@@ -1,0 +1,15 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  asst1.cpp
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(104,45): warning C4244: 'argument': conversion from 'GLfloat' to 'const GLint', possible loss of data
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(105,45): warning C4244: 'argument': conversion from 'GLfloat' to 'const GLint', possible loss of data
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(109,45): warning C4244: 'argument': conversion from 'GLfloat' to 'const GLint', possible loss of data
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(110,45): warning C4244: 'argument': conversion from 'GLfloat' to 'const GLint', possible loss of data
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(231,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(295,46): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(321,50): warning C4244: '=': conversion from 'GLint' to 'GLfloat', possible loss of data
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\asst1.cpp(322,49): warning C4244: '=': conversion from 'GLint' to 'GLfloat', possible loss of data
+asst1.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\Joseph\source\repos\cs175-assignment-1-another1\Debug\vc120.pdb'; linking object as if no debug info
+  asst1.vcxproj -> C:\Users\Joseph\source\repos\cs175-assignment-1-another1\Debug\asst1.exe

@@ -1,0 +1,3 @@
+C:\Users\sir664\Documents\staff-cs175-s22\asst1\release\Debug\asst1.exe
+C:\Users\sir664\Documents\staff-cs175-s22\asst1\release\Debug\asst1.pdb
+C:\Users\Joseph\source\repos\cs175-assignment-1-another1\Debug\asst1.exe
