@@ -1,90 +1,32 @@
-// // A Koch snowflake
-// let axiom = 'F';
-// let rules = {
-//   'F': 'F+F--F+F',
-//   '+': '+',
-//   '-': '-'
-// };
-// let generations = 4;
-// let segmentLength = 10;
-// let angle = 60;
+// L-Systems Generator!
+// Creating a GUI control box, to control our L-system drawings. For this, we use two libraries
+// linked in the index.html file, namely : p5.gui.js and quicksettings.js
+// documentation can be found here : https://bitcraftlab.github.io/p5.gui/
 
-// // A quadratic Koch snowflake
-// let axiom = 'F';
-// let rules = {
-//   'F': 'F+F-F-F+F',
-//   '+': '+',
-//   '-': '-'
-// };
-// let generations = 4;
-// let segmentLength = 10;
-// let angle = 90;
+// Base L-System defining parameters for the GUI
+var axiom = "F+F+F+F+F";
+var rule_1 = '"F":"F+F--F+F"';
+var rule_2 = '"+":"+"';
+var rule_3 = '"-":"-"';
+var rule_4 = '';
+var rule_5 = '';
+var rule_6 = '';
 
-// // A quadratic Koch island
-// let axiom = 'F-F-F-F';
-// let rules = {
-//   'F': 'F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F',
-//   '+': '+',
-//   '-': '-'
-// };
-// let generations = 2;
-// let segmentLength = 10;
-// let angle = 90;
-
-// // Islands and lakes!
-// let axiom = 'F+F+F+F';
-// let rules = {
-//   'F': 'F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF',
-//   'f': 'ffffff',
-//   '+': '+',
-//   '-': '-'
-// };
-// let generations = 2;
-// let segmentLength = 10;
-// let angle = 90;
-
-// // Sierpinski gasket!
-// let axiom = 'A';
-// let rules = {
-//   'A': 'B-A-B',
-//   'B': 'A+B+A',
-//   '+': '+',
-//   '-': '-'
-// };
-// let generations = 6;
-// let segmentLength = 10;
-// let angle = 60;
-
-// // Hexagonal Gosper curve
-// let axiom = 'L';
-// let rules = {
-//   'L': 'L+R++R-L--LL-R+',
-//   'R': '-L+RR++R+L--L-R',
-//   '+': '+',
-//   '-': '-'
-// };
-// let generations = 5;
-// let segmentLength = 10;
-// let angle = 60;
-
-// Tree
-let axiom = '0';
-let rules = {
-  '1': '11',
-  '0': '1[0]0',
-  '[': '[',
-  ']': ']'
-};
-let generations = 7;
-let segmentLength = 3;
-let angle = 0;
+var generations = 4;
+var generationsMax = 10;
+var segmentLength = 6;
+var angle = 72;
+var angleMin = 0; //p5.gui.js can automatically identify this as a slider variable
+var angleMax = 360;
+var draw_animation = false;
+var angle_animation = false;
+var strokeColor = '#787878';
+var backgroundColor = '#323232';
 
 
-
-
-// Generate a few generations of the L-system
-let sequence = generateSequence(generations, axiom, rules);
-console.log(sequence);
+// GUI variables
+var visible = true;
+var gui_rules, gui_controls;
 
 let limit = 0;
 let nodes = [];
@@ -94,12 +36,24 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // nodes.push(new Draggable(windowWidth / 2, windowHeight / 2, 10));
-  nodes.push(new Draggable(0.5 * windowWidth, windowHeight - 50, 10));
+  nodes.push(new Draggable(0.7 * windowWidth, 0.6 * windowHeight, 10));
+
+
+  // Create Layout GUI
+  gui_rules = createGui('Define your systems here!'); // One layout to edit rules
+  gui_controls = createGui('Control your systems here!').setPosition(250, 20); // Another layout to edit controls
+
+  //p5.gui.js automatically identifies the type of UI element based on variable value. so we simply add them to our GUI.
+  gui_rules.addGlobals('axiom', 'rule_1', 'rule_2', 'rule_3', 'rule_4', 'rule_5', 'rule_6'); //Adding UI elements
+  gui_controls.addGlobals('backgroundColor', 'strokeColor', 'generations', 'segmentLength', 'angle', 'draw_animation', 'angle_animation'); // Adding UI elements
+
 }
 
 // p5.js draw
 function draw() {
-  background(255);
+  
+  background(backgroundColor);
+  stroke(strokeColor);
 
   for (let node of nodes) {
     node.update();
@@ -111,12 +65,45 @@ function draw() {
   rotate(radians(-90));
   // rotate(radians(0));
 
+  // Creating the rules dictionary from UI input
+  //joining all non-empty rule strings into a string form of a dictionary
+  let all_rules = "{" + [rule_1, rule_2, rule_3, rule_4, rule_5, rule_6].filter(x => x.length > 0).join() + "}";
+  // converting dictionary string form to dictionary
+  // Putting inside an exception handling statement to prevent syntax error during typing of rules in the GUI
+  let rules = {};
+  if(all_rules) {
+    try {
+        rules = JSON.parse(all_rules);
+    } catch(e) {
+        console.log("incomplete/invalid rules!") // error in the above string (incorrect/incomplete input of rules in GUI)
+    }
+  }
+
+  // Generate a few generations of the L-system
+  let sequence = generateSequence(generations, axiom, rules);
   push();
   turtleDraw(sequence, limit);
   pop();
 
-  angle -= 0.25;
-  limit += 3;
+  // Handling animation based on choice
+  if (draw_animation) {
+    if (limit > sequence.length) {
+      limit = 1;
+    }
+    limit += 3;
+  }
+  else if (angle_animation) {
+    angle -= 0.2;
+  }
+  else {
+    limit = sequence.length;
+  }
+
+}
+// Making sure to handle events associated with resizing the window
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  gui_controls.setPosition(250, 20);
 }
 
 
@@ -213,9 +200,6 @@ function applyRules(sentence, rules) {
 
   return newSentence;
 }
-
-
-
 
 // When mouse is clicked, find the neares node and drag it.
 function mousePressed() {
