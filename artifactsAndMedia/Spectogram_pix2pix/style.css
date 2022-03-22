@@ -1,0 +1,14 @@
+html, body {
+  width: 900px;
+  height: 256px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+div {
+  outline: solid 2px black;
+  align-items: center;
+}
